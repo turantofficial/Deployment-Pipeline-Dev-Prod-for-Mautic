@@ -1,0 +1,7 @@
+default:
+  tags:
+    - mautic-production-b2b
+variables:
+  BRANCH: "production"
+
+include: /.gitlab/template/base.yml
