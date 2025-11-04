@@ -1,0 +1,16 @@
+stages:
+  - deploy
+
+.deploy_common:
+  script:
+    - 'set -Eeuo pipefail'
+    - 'umask 0002'
+    - 'PROJECT_DIR="/var/www/mautic"; DEV_USER="developer"; BRANCH="${BRANCH:-master}"'
+    - 'sudo -n -H -u "${DEV_USER}" git --git-dir="${PROJECT_DIR}/.git" --work-tree="${PROJECT_DIR}" fetch --all --prune'
+    - 'sudo -n -H -u "${DEV_USER}" git --git-dir="${PROJECT_DIR}/.git" --work-tree="${PROJECT_DIR}" reset --hard'
+    - 'sudo -n -H -u "${DEV_USER}" git --git-dir="${PROJECT_DIR}/.git" --work-tree="${PROJECT_DIR}" checkout -f "${BRANCH}"'
+    - 'sudo -n -H -u "${DEV_USER}" git --git-dir="${PROJECT_DIR}/.git" --work-tree="${PROJECT_DIR}" pull --ff-only'
+    - 'sudo -n -H -u "${DEV_USER}" /usr/local/bin/composer install --no-interaction --prefer-dist --no-ansi --no-progress --working-dir="${PROJECT_DIR}"'
+    - 'mkdir -p "${PROJECT_DIR}/var/cache" "${PROJECT_DIR}/var/logs" "${PROJECT_DIR}/var/sessions"'
+    - 'sudo -n rm -rf "${PROJECT_DIR}/var/cache/"*'
+    - 'sudo -n chown -R www-data:www-data "${PROJECT_DIR}"'
