@@ -32,6 +32,25 @@ mautic_b2b_staging.yml    mautic_b2c_staging.yml
 
 ```
 
+```
+             ┌──────────────────-┐
+             │ Push to prod      │
+             └────────┬──────────┘
+                      │
+               triggers in ci.yml
+                      │
+         ┌────────────┴────────────┐
+         │                         │
+ .gitlab/template/           .gitlab/template/
+mautic_b2b_production.yml   mautic_b2c_production.yml
+         │                         │
+   include base.yml           include base.yml
+         │                         │
+   Runner (b2b-prod)         Runner (b2c-prod)
+         │                         │
+     Deployment               Deployment
+```
+
 Install gitlab runners to mautic b2b production and mautic b2c production  
 
 `curl -L https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.deb.sh | bash`  
