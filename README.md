@@ -11,3 +11,13 @@ Steps:
 - Create separate yml configs for staging and production
 
 - In the last step create production branch from master
+
+
+.gitlab/
+ ├─ ci.yml                   
+ └─ template/
+     ├─ base.yml             
+     ├─ mautic_b2b_staging.yml
+     ├─ mautic_b2c_staging.yml
+     ├─ mautic_b2b_production.yml
+     └─ mautic_b2c_production.yml
